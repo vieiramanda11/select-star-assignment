@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from '../Button'
 import { styled } from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 
 interface PaginationProps {
   currentPage: number
@@ -43,7 +45,7 @@ export const Pagination = ({
           onPageChange(currentPage - 1)
         }}
         disabled={currentPage <= 1}>
-        Previous Page
+        <FontAwesomeIcon icon={faAnglesLeft} />
       </Button>
       {getPageNumbers().map((pageNumber) => (
         <Button
@@ -60,7 +62,7 @@ export const Pagination = ({
           onPageChange(currentPage + 1)
         }}
         disabled={currentPage >= totalPages}>
-        Next Page
+        <FontAwesomeIcon icon={faAnglesRight} />
       </Button>
     </Container>
   )
