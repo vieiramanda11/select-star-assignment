@@ -2,7 +2,12 @@ import React from 'react'
 import Button from '../Button'
 import { styled } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
+import {
+  faAnglesRight,
+  faAnglesLeft,
+  faArrowLeft,
+  faArrowRight,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface PaginationProps {
   currentPage: number
@@ -13,6 +18,34 @@ interface PaginationProps {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+`
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+`
+
+const ArrowButton = styled.button`
+  border: 1px solid #4285f4;
+  color: #4285f4;
+  border-radius: 16px;
+  padding: 5px 20px;
+  background-color: #fff;
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`
+
+const ArrowIcon = styled(FontAwesomeIcon)`
+  margin: 0 5px;
 `
 
 export const Pagination = ({
@@ -40,30 +73,50 @@ export const Pagination = ({
 
   return (
     <Container>
-      <Button
-        onClick={() => {
-          onPageChange(currentPage - 1)
-        }}
-        disabled={currentPage <= 1}>
-        <FontAwesomeIcon icon={faAnglesLeft} />
-      </Button>
-      {getPageNumbers().map((pageNumber) => (
+      <div>
         <Button
-          key={pageNumber}
           onClick={() => {
-            onPageChange(pageNumber)
+            onPageChange(currentPage - 1)
           }}
-          active={pageNumber === currentPage}>
-          {pageNumber}
+          disabled={currentPage <= 1}>
+          <FontAwesomeIcon icon={faAnglesLeft} />
         </Button>
-      ))}
-      <Button
-        onClick={() => {
-          onPageChange(currentPage + 1)
-        }}
-        disabled={currentPage >= totalPages}>
-        <FontAwesomeIcon icon={faAnglesRight} />
-      </Button>
+        {getPageNumbers().map((pageNumber) => (
+          <Button
+            key={pageNumber}
+            onClick={() => {
+              onPageChange(pageNumber)
+            }}
+            active={pageNumber === currentPage}>
+            {pageNumber}
+          </Button>
+        ))}
+        <Button
+          onClick={() => {
+            onPageChange(currentPage + 1)
+          }}
+          disabled={currentPage >= totalPages}>
+          <FontAwesomeIcon icon={faAnglesRight} />
+        </Button>
+      </div>
+      <ButtonsContainer>
+        <ArrowButton
+          onClick={() => {
+            onPageChange(1)
+          }}
+          disabled={currentPage === 1}>
+          <ArrowIcon icon={faArrowLeft} />
+          Older
+        </ArrowButton>
+        <ArrowButton
+          onClick={() => {
+            onPageChange(totalPages - 1)
+          }}
+          disabled={currentPage === totalPages}>
+          Newer
+          <ArrowIcon icon={faArrowRight} />
+        </ArrowButton>
+      </ButtonsContainer>
     </Container>
   )
 }

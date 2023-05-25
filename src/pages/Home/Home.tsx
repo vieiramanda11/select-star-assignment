@@ -10,7 +10,7 @@ import Error from '../../components/Error'
 
 const Container = styled.div`
   padding: 20px 80px;
-  height: 75vh;
+  height: 70vh;
 `
 
 export const Home = (): JSX.Element => {
@@ -83,13 +83,15 @@ export const Home = (): JSX.Element => {
       prefetchPages.push(i)
     }
 
-    prefetchPages.forEach((prefetchPage: number) => {
-      void queryClient.prefetchQuery({
-        queryKey: ['exhibitions', prefetchPage],
-        queryFn: async () =>
-          await fetchApi(prefetchPage, searchQuery, sortOption, sortOrder),
+    if (page <= totalPages - 4) {
+      prefetchPages.forEach((prefetchPage: number) => {
+        void queryClient.prefetchQuery({
+          queryKey: ['exhibitions', prefetchPage],
+          queryFn: async () =>
+            await fetchApi(prefetchPage, searchQuery, sortOption, sortOrder),
+        })
       })
-    })
+    }
   }, [page, searchQuery, sortOption, sortOrder])
 
   return (
