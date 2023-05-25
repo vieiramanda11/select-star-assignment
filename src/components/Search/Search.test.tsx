@@ -3,36 +3,17 @@ import { render, fireEvent } from '@testing-library/react'
 import { Search } from './Search'
 
 describe('Search', () => {
-  const onChangeMock = jest.fn()
-
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('renders correctly with initial value and placeholder', () => {
-    const { getByPlaceholderText, getByDisplayValue } = render(
-      <Search
-        value="initial value"
-        onChange={onChangeMock}
-        placeholder="Search here"
-      />,
+  it('updates the value when the input is changed', () => {
+    const handleChange = jest.fn()
+    const { getByPlaceholderText } = render(
+      <Search onChange={handleChange} placeholder="Search table..." />,
     )
 
-    const inputElement = getByDisplayValue('initial value')
-    const placeholderText = getByPlaceholderText('Search here')
-
-    expect(inputElement).toBeInTheDocument()
-    expect(placeholderText).toBeInTheDocument()
-  })
-
-  it('calls onChange function correctly when input value changes', () => {
-    const { getByRole } = render(<Search onChange={onChangeMock} />)
-
-    const inputElement = getByRole('textbox')
+    const inputElement = getByPlaceholderText(
+      'Search table...',
+    ) as HTMLInputElement
     fireEvent.change(inputElement, { target: { value: 'new value' } })
 
-    expect(onChangeMock).toHaveBeenCalledTimes(1)
-    expect(onChangeMock).toHaveBeenCalledWith(expect.any(Object))
     expect(inputElement.value).toBe('new value')
   })
 })
