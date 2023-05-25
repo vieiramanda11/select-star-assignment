@@ -5,6 +5,7 @@ import { isExhibitionOpen } from '../../utils/isExhibitionOpen'
 const TableWrapper = styled.div`
   max-height: 100%;
   overflow: auto;
+  margin: 30px 0;
   &::-webkit-scrollbar {
     width: 0.5em;
   }
