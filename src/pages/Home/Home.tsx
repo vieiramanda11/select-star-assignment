@@ -6,6 +6,7 @@ import Pagination from '../../components/Pagination'
 import Table from '../../components/Table'
 import Search from '../../components/Search'
 import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 const Container = styled.div`
   padding: 20px 80px;
@@ -96,7 +97,7 @@ export const Home = (): JSX.Element => {
       {isLoading ? (
         <Loading />
       ) : isError ? (
-        <div>Error</div>
+        <Error />
       ) : (
         <>
           <Search value={searchQuery} onChange={handleSearchChange} />
