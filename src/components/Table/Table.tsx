@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import { isExhibitionOpen } from '../../utils/isExhibitionOpen'
 import TableHeaderCell from '../TableHeaderCell'
+import { removeParagraphTags } from '../../utils/removeParagraphTags'
 
 const TableWrapper = styled.div`
   max-height: 100%;
@@ -35,8 +36,8 @@ const TableRow = styled.tr<{ isOpen: string }>`
 
 const TableDataCell = styled.td`
   padding: 10px;
-  height: 2rem;
-  min-width: 140px;
+  height: 2.5rem;
+  min-width: 130px;
 `
 
 const TableDataCellDescription = styled.td`
@@ -117,11 +118,9 @@ export const Table = ({
           {data.map((item) => (
             <TableRow key={item.id} isOpen={isExhibitionOpen(item)}>
               <TableDataCell>{item.title}</TableDataCell>
-              <TableDataCellDescription
-                dangerouslySetInnerHTML={{
-                  __html: item.short_description,
-                }}
-              />
+              <TableDataCellDescription>
+                <p>{removeParagraphTags(item.short_description)}</p>
+              </TableDataCellDescription>
               <TableDataCell>{item.is_featured ? 'Yes' : 'No'}</TableDataCell>
               <TableDataCell>{item.gallery}</TableDataCell>
             </TableRow>
