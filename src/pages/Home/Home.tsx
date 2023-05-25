@@ -43,14 +43,13 @@ export const Home = (): JSX.Element => {
   }
 
   const { isLoading, isError, data, isFetching } = useQuery(
-    ['exhibitions', page, searchQuery],
+    ['exhibitions', page, searchQuery, sortOption],
     async () => await fetchApi(page, searchQuery, sortOption),
     {
       keepPreviousData: true,
     },
   )
 
-  console.log('data', searchQuery, sortOption)
   const totalPages = data?.pagination?.total_pages ?? 0
   const currentPage = data?.pagination?.current_page ?? 0
 
