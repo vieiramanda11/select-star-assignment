@@ -5,6 +5,7 @@ import { fetchApi } from '../../utils/fetchApi'
 import Pagination from '../../components/Pagination'
 import Table from '../../components/Table'
 import Search from '../../components/Search'
+import Loading from '../../components/Loading'
 
 const Container = styled.div`
   padding: 20px 80px;
@@ -93,19 +94,22 @@ export const Home = (): JSX.Element => {
   return (
     <Container>
       {isLoading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : isError ? (
         <div>Error</div>
       ) : (
         <>
           <Search value={searchQuery} onChange={handleSearchChange} />
-          <Table data={data.data} onHeaderClick={handleHeaderClick} />
+          <Table
+            data={data.data}
+            onHeaderClick={handleHeaderClick}
+            isFetching={isFetching}
+          />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setPage}
           />
-          {isFetching ? <span> Loading...</span> : null}
         </>
       )}
     </Container>

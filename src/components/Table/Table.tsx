@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { isExhibitionOpen } from '../../utils/isExhibitionOpen'
 import TableHeaderCell from '../TableHeaderCell'
 
@@ -52,6 +52,29 @@ const TableDataCellDescription = styled.td`
   }
 `
 
+const loadingAnimation = keyframes`
+  0% {
+    border-top-color: transparent;
+    border-top-width: 0;
+  }
+  50% {
+    border-top-color: #4285f4;
+    border-top-width: 2px;
+  }
+  100% {
+    border-top-color: transparent;
+    border-top-width: 0;
+  }
+`
+
+const LoadingBorder = css`
+  animation: ${loadingAnimation} 1.5s infinite;
+`
+
+const LoadingTableContainer = styled(TableContainer)<{ isFetching: boolean }>`
+  ${({ isFetching }) => isFetching && LoadingBorder};
+`
+
 interface Data {
   id: string
   title: string
@@ -63,15 +86,21 @@ interface Data {
 interface TableProps {
   data: Data[]
   onHeaderClick?: (option: string) => void
+  isFetching?: boolean
 }
 
-export const Table = ({ data, onHeaderClick }: TableProps): JSX.Element => {
+export const Table = ({
+  data,
+  onHeaderClick,
+  isFetching = false,
+}: TableProps): JSX.Element => {
   const handleHeaderClick = (option: string): any => {
     onHeaderClick?.(option)
   }
+
   return (
     <TableWrapper>
-      <TableContainer>
+      <LoadingTableContainer isFetching={isFetching}>
         <thead>
           <TableHeaderCell onClick={() => handleHeaderClick('title')}>
             Title
@@ -98,7 +127,7 @@ export const Table = ({ data, onHeaderClick }: TableProps): JSX.Element => {
             </TableRow>
           ))}
         </tbody>
-      </TableContainer>
+      </LoadingTableContainer>
     </TableWrapper>
   )
 }
