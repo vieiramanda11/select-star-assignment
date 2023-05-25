@@ -1,46 +1,55 @@
-# Getting Started with Create React App
+# Select Start Assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React app that allows you to get data from an [API](https://api.artic.edu/docs/#introduction) and displays it in a table.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+To run the project locally, follow the instructions below.
 
-### `yarn start`
+### Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Make sure you have the following software installed on your machine:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js: [Download and install Node.js](https://nodejs.org)
 
-### `yarn test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install the dependencies.
 
-### `yarn build`
+```shell
+yarn
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running the App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To start the development server and run the app locally, use the following command:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```shell
+yarn start
+```
 
-### `yarn eject`
+This will start the app and open it in your default browser. If it doesn't open automatically, you can visit http://localhost:3000 in your browser.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Running Tests
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To run the tests, use the following command:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```shell
+yarn test
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This will run the test suite and display the results.
 
-## Learn More
+## Other Scripts
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- yarn lint: This command runs ESLint to lint your code and report any errors or warnings.
+- yarn lint:fix: This command runs ESLint and attempts to automatically fix any linting errors or warnings.
+- yarn prettier: This command runs Prettier to format your code and automatically make it consistent.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Technologies Used
+
+- **Styled Components**: This project utilizes Styled Components for styling, allowing for component-based styling and dynamic theming.
+- **React Query**: The app utilizes React Query library to manage data fetching and caching, providing a seamless experience for handling server state and asynchronous data.
+- **Jest and React Testing Library**: Unit tests for the components are written using Jest and React Testing Library, enabling thorough testing and ensuring the correctness of component behavior.
