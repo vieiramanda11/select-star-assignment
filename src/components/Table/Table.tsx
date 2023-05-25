@@ -40,7 +40,21 @@ const TableHeaderCell = styled.th`
 `
 
 const TableDataCell = styled.td`
-  padding: 15px;
+  padding: 10px;
+  height: 2rem;
+`
+
+const TableDataCellDescription = styled.td`
+  padding: 10px;
+  height: 2.5rem;
+  > p {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
 `
 
 interface Data {
@@ -69,7 +83,11 @@ export const Table = ({ data }: TableProps): JSX.Element => {
           {data.map((item) => (
             <TableRow key={item.id} isOpen={isExhibitionOpen(item)}>
               <TableDataCell>{item.title}</TableDataCell>
-              <TableDataCell>{item.short_description}</TableDataCell>
+              <TableDataCellDescription
+                dangerouslySetInnerHTML={{
+                  __html: item.short_description,
+                }}
+              />
               <TableDataCell>{item.is_featured ? 'Yes' : 'No'}</TableDataCell>
               <TableDataCell>{item.gallery}</TableDataCell>
             </TableRow>
