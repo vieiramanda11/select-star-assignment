@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchApi } from '../../utils/fetchApi'
 import Pagination from '../../components/Pagination'
 import Table from '../../components/Table'
@@ -9,7 +8,7 @@ import Search from '../../components/Search'
 
 const Container = styled.div`
   padding: 20px 80px;
-  height: 80vh;
+  height: 75vh;
 `
 
 export const Home = (): JSX.Element => {
@@ -19,6 +18,8 @@ export const Home = (): JSX.Element => {
     null,
   )
   const [sortOption, setSortOption] = useState<string | undefined>(undefined)
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const queryClient = useQueryClient()
 
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -26,7 +27,7 @@ export const Home = (): JSX.Element => {
     const value = event.target.value
     setSearchQuery(value)
 
-    if (typingTimeout) {
+    if (typingTimeout !== null) {
       clearTimeout(typingTimeout)
     }
 
@@ -42,9 +43,14 @@ export const Home = (): JSX.Element => {
     setSearchQuery(query)
   }
 
+  const handleHeaderClick = (header: string): void => {
+    setSortOption(header)
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+  }
+
   const { isLoading, isError, data, isFetching } = useQuery(
-    ['exhibitions', page, searchQuery, sortOption],
-    async () => await fetchApi(page, searchQuery, sortOption),
+    ['exhibitions', page, searchQuery, sortOption, sortOrder],
+    async () => await fetchApi(page, searchQuery, sortOption, sortOrder),
     {
       keepPreviousData: true,
     },
@@ -55,11 +61,34 @@ export const Home = (): JSX.Element => {
 
   useEffect(() => {
     return () => {
-      if (typingTimeout) {
+      if (typingTimeout !== null) {
         clearTimeout(typingTimeout)
       }
     }
   }, [typingTimeout])
+
+  useEffect(() => {
+    const prefetchPages = []
+    const prefetchRange = 4
+    const startPage = Math.max(1, page - prefetchRange)
+    const endPage = page + prefetchRange
+
+    for (let i = startPage; i < page; i++) {
+      prefetchPages.push(i)
+    }
+
+    for (let i = page + 1; i <= endPage; i++) {
+      prefetchPages.push(i)
+    }
+
+    prefetchPages.forEach((prefetchPage: number) => {
+      void queryClient.prefetchQuery({
+        queryKey: ['exhibitions', prefetchPage],
+        queryFn: async () =>
+          await fetchApi(prefetchPage, searchQuery, sortOption, sortOrder),
+      })
+    })
+  }, [page, searchQuery, sortOption, sortOrder])
 
   return (
     <Container>
@@ -70,7 +99,7 @@ export const Home = (): JSX.Element => {
       ) : (
         <>
           <Search value={searchQuery} onChange={handleSearchChange} />
-          <Table data={data.data} onHeaderClick={setSortOption} />
+          <Table data={data.data} onHeaderClick={handleHeaderClick} />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

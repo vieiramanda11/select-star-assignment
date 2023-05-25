@@ -4,20 +4,11 @@ export const fetchApi = async (
   page: number,
   searchQuery?: string,
   sortOption?: string,
+  sortOrder?: string,
 ): Promise<any> => {
-  let url = `${API_URL}`
-  if (searchQuery !== undefined || sortOption !== undefined) {
-    url += `search`
-    if (searchQuery !== undefined) {
-      url += `?q=${searchQuery}`
-    }
-    if (sortOption !== undefined) {
-      url += `${searchQuery !== undefined ? '&' : '?'}`
-    }
-  }
-  url += `${
-    searchQuery !== undefined || sortOption !== undefined ? '&' : '?'
-  }page=${page}&limit=30`
+  const url = `${API_URL}search?q=${
+    searchQuery ?? ''
+  }&page=${page}&limit=30&fields=id,title,short_description,gallery_title,type,is_featured,aic_start_at,aic_end_at`
 
   const requestBody = {
     page,
@@ -28,7 +19,7 @@ export const fetchApi = async (
             {
               [`${sortOption}.keyword`]: {
                 unmapped_type: 'long',
-                order: 'asc',
+                order: sortOrder,
               },
             },
           ]
@@ -36,7 +27,7 @@ export const fetchApi = async (
     fields: [
       'id',
       'title',
-      'description',
+      'short_description',
       'gallery_title',
       'type',
       'is_featured',

@@ -36,6 +36,7 @@ const TableRow = styled.tr<{ isOpen: string }>`
 const TableDataCell = styled.td`
   padding: 10px;
   height: 2rem;
+  min-width: 140px;
 `
 
 const TableDataCellDescription = styled.td`
@@ -61,12 +62,12 @@ interface Data {
 
 interface TableProps {
   data: Data[]
-  onHeaderClick: (option: string) => void
+  onHeaderClick?: (option: string) => void
 }
 
 export const Table = ({ data, onHeaderClick }: TableProps): JSX.Element => {
   const handleHeaderClick = (option: string): any => {
-    onHeaderClick(option)
+    onHeaderClick?.(option)
   }
   return (
     <TableWrapper>
@@ -75,9 +76,7 @@ export const Table = ({ data, onHeaderClick }: TableProps): JSX.Element => {
           <TableHeaderCell onClick={() => handleHeaderClick('title')}>
             Title
           </TableHeaderCell>
-          <TableHeaderCell onClick={() => handleHeaderClick('description')}>
-            Description
-          </TableHeaderCell>
+          <TableHeaderCell enableHover={false}>Description</TableHeaderCell>
           <TableHeaderCell onClick={() => handleHeaderClick('is_featured')}>
             Is Featured
           </TableHeaderCell>

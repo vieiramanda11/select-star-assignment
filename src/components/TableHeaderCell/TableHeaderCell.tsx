@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort } from '@fortawesome/free-solid-svg-icons'
 
-const TableHeaderCellWrapper = styled.th`
+const TableHeaderCellWrapper = styled.th<{ enableHover: boolean }>`
   padding: 10px;
   background-color: #e6e6e6;
   font-weight: bold;
@@ -11,9 +11,13 @@ const TableHeaderCellWrapper = styled.th`
   cursor: pointer;
   position: relative;
 
-  &:hover .sort-icon {
-    display: inline-block;
-  }
+  ${({ enableHover }) =>
+    enableHover &&
+    `
+    &:hover .sort-icon {
+      display: inline-block;
+    }
+  `}
 `
 
 const SortIcon = styled(FontAwesomeIcon)`
@@ -26,29 +30,32 @@ const SortIcon = styled(FontAwesomeIcon)`
 `
 
 interface TableHeaderCellProps {
-  onClick: () => void
+  onClick?: () => void
   children: any
+  enableHover?: boolean
 }
 
 export const TableHeaderCell = ({
   onClick,
   children,
+  enableHover = true,
 }: TableHeaderCellProps): JSX.Element => {
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseEnter = (): any => {
+  const handleMouseEnter = (): void => {
     setIsHovered(true)
   }
 
-  const handleMouseLeave = (): any => {
+  const handleMouseLeave = (): void => {
     setIsHovered(false)
   }
 
   return (
     <TableHeaderCellWrapper
       onClick={onClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
+      onMouseEnter={enableHover ? handleMouseEnter : undefined}
+      onMouseLeave={enableHover ? handleMouseLeave : undefined}
+      enableHover={enableHover}>
       {children}
       {isHovered && <SortIcon icon={faSort} className="sort-icon" />}
     </TableHeaderCellWrapper>
