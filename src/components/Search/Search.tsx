@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 interface InputProps {
-  value: string
+  value?: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
 }

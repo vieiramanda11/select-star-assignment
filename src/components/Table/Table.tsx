@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { isExhibitionOpen } from '../../utils/isExhibitionOpen'
+import TableHeaderCell from '../TableHeaderCell'
 
 const TableWrapper = styled.div`
   max-height: 100%;
@@ -32,13 +33,6 @@ const TableRow = styled.tr<{ isOpen: string }>`
   text-align: center;
 `
 
-const TableHeaderCell = styled.th`
-  padding: 10px;
-  background-color: #e6e6e6;
-  font-weight: bold;
-  text-align: center;
-`
-
 const TableDataCell = styled.td`
   padding: 10px;
   height: 2rem;
@@ -67,17 +61,29 @@ interface Data {
 
 interface TableProps {
   data: Data[]
+  onHeaderClick: (option: string) => void
 }
 
-export const Table = ({ data }: TableProps): JSX.Element => {
+export const Table = ({ data, onHeaderClick }: TableProps): JSX.Element => {
+  const handleHeaderClick = (option: string): any => {
+    onHeaderClick(option)
+  }
   return (
     <TableWrapper>
       <TableContainer>
         <thead>
-          <TableHeaderCell>Title</TableHeaderCell>
-          <TableHeaderCell>Description</TableHeaderCell>
-          <TableHeaderCell>Is Featured</TableHeaderCell>
-          <TableHeaderCell>Gallery Title</TableHeaderCell>
+          <TableHeaderCell onClick={() => handleHeaderClick('title')}>
+            Title
+          </TableHeaderCell>
+          <TableHeaderCell onClick={() => handleHeaderClick('description')}>
+            Description
+          </TableHeaderCell>
+          <TableHeaderCell onClick={() => handleHeaderClick('is_featured')}>
+            Is Featured
+          </TableHeaderCell>
+          <TableHeaderCell onClick={() => handleHeaderClick('gallery_title')}>
+            Gallery Title
+          </TableHeaderCell>
         </thead>
         <tbody>
           {data.map((item) => (

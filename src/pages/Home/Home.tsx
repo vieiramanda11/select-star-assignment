@@ -14,10 +14,11 @@ const Container = styled.div`
 
 export const Home = (): JSX.Element => {
   const [page, setPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined)
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null,
   )
+  const [sortOption, setSortOption] = useState<string | undefined>(undefined)
 
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -43,12 +44,13 @@ export const Home = (): JSX.Element => {
 
   const { isLoading, isError, data, isFetching } = useQuery(
     ['exhibitions', page, searchQuery],
-    async () => await fetchApi(page, searchQuery),
+    async () => await fetchApi(page, searchQuery, sortOption),
     {
       keepPreviousData: true,
     },
   )
 
+  console.log('data', searchQuery, sortOption)
   const totalPages = data?.pagination?.total_pages ?? 0
   const currentPage = data?.pagination?.current_page ?? 0
 
@@ -69,7 +71,7 @@ export const Home = (): JSX.Element => {
       ) : (
         <>
           <Search value={searchQuery} onChange={handleSearchChange} />
-          <Table data={data.data} />
+          <Table data={data.data} onHeaderClick={setSortOption} />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
